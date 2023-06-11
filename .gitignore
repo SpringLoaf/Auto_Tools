@@ -1,3 +1,9 @@
+# Additional Logs / Output Files / Configs
+config.json
+geckodriver.log
+scraper.csv
+output.csv
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
