@@ -3,6 +3,7 @@ config.json
 geckodriver.log
 scraper.csv
 output.csv
+tasks
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -16,7 +16,7 @@ with open('scraper.csv', 'wt', newline='') as neu:
 		dat = curl.split('/')
 		if dat[5] != url:
 			cat = dat[5].split(',')
-			if len(cat) >= 3:
+			if len(cat) >= 2:
 				for x in range(len(cat)):
 					cat[x] = cat[x].replace('+', ' ')
 				scraperfile.writerow(cat[0:2])
