@@ -87,6 +87,7 @@ def extract_phone(address):
 #		4. Extract contact from data
 #		5. Die
 def main():
+	lines = 0
 	for row in INPUT_CSV:
 		print(f'\n\nAddress: {row[0]}')
 		contacts_list = 0
@@ -134,6 +135,8 @@ def main():
 				driver.back()
 		print(contacts_number)
 		OUTPUT_CSV.writerow(contacts_number)
+		lines += 1
+		print(f'Lines Done: {lines}')
 
 #	Do a try except statement to catch errors
 try:
