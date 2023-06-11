@@ -45,6 +45,8 @@ MAX_NAMES = CONFIG.get("max_names")
 INPUT_FILE = CONFIG.get("input_filename")
 OUTPUT_FILE = CONFIG.get("output_filename")
 
+
+# General Functions
 def extract_contacts(contacts_raw):
 	contacts_extract = []
 	for x in contacts_raw:
@@ -85,7 +87,7 @@ def extract_phone(address):
 #		2. WebDriver gets url and visits the premade link
 #		3. Selenium extracts data and process them into human readable format 
 #		4. Extract contact from data
-#		5. Die
+#		5. Shine
 def main():
 	lines = 0
 	for row in INPUT_CSV:
