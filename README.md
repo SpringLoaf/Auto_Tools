@@ -61,4 +61,4 @@ Configuration[^1]:
  - [x] Drink Coffee
  - [ ] Integration of 3 scripts to a single script
 
-[^1]: Will appear once script has been run
+[^1]: Will appear once script has been run once
