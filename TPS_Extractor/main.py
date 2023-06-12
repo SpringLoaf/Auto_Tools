@@ -109,7 +109,7 @@ def main():
 			if 'We could not find any records for that search criteria.' in blank_page:
 				break
 			print(f'\nContact # {contacts_list}')
-			driver.implicitly_wait(1)
+			driver.implicitly_wait(2)
 			wait1 = WebDriverWait(driver, TIMEOUT).until(EC.presence_of_all_elements_located((By.XPATH, '/html/body/div[3]/div/div[2]/div/div[1]/div[2]/a')))
 			contacts_raw = driver.find_elements(By.XPATH, "/html/body/div[3]/div/div[2]/div")
 			links = driver.find_elements(By.XPATH, '/html/body/div[3]/div/div[2]/div/div[1]/div[2]/a')
