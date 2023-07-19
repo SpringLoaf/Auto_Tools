@@ -4,7 +4,10 @@ import csv
 import json
 import time
 import random
+import undetected_chromedriver as udc
 from selenium import webdriver
+from selenium.webdriver.firefox.options import Options
+from selenium.webdriver.firefox.service import Service
 from selenium.common import exceptions
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -14,8 +17,31 @@ from selenium.webdriver.support import expected_conditions as EC
 TIME_START = time.perf_counter()
 
 #	Initiate WebDriver
-driver = webdriver.Firefox()
-driver.install_addon('./ublock_origin-1.49.2.xpi', temporary=True)
+"""
+chr_opt = webdriver.ChromeOptions()
+chr_opt.add_experimental_option("excludeSwitches", ["enable-automation"])
+chr_opt.add_experimental_option('useAutomationExtension', False)
+chr_opt.add_argument('--disable-blink-features=AutomationControlled')
+driver = webdriver.Chrome(options=chr_opt)
+driver.execute_cdp_cmd('Network.setUserAgentOverride', {"userAgent": 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.53 Safari/537.36'})
+driver.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
+"""
+options = webdriver.ChromeOptions()
+options.add_extension('./ublock_origin.crx')
+options.add_argument('--no-sandbox')
+options.add_argument('start-maximized')
+options.add_argument('enable-automation')
+options.add_argument('--disable-infobars')
+options.add_argument('--disable-dev-shm-usage')
+options.add_argument('--disable-browser-side-navigation')
+options.add_argument("--remote-debugging-port=9222")
+# options.add_argument("--headless")
+options.add_argument('--disable-gpu')
+options.add_argument("--log-level=3")
+driver = webdriver.Chrome(options=options)
+
+# Use for Firefox
+#driver.install_addon('./ublock_origin-1.49.2.xpi', temporary=True)
 
 #	Load Configuration
 CONFIG = {}
@@ -49,8 +75,8 @@ OUTPUT_FILE = CONFIG.get("output_filename")
 
 # General Functions
 def randomizer():
-	#return random.uniform(2, 4)
-	return 0
+	#return random.uniform(4, 5)
+	return 10
 
 
 def extract_contacts(contacts_raw):
@@ -102,14 +128,16 @@ def main():
 		contacts_found = 0
 		contacts_number = []
 		first_found = ''
-		time.sleep(randomizer())
+		#time.sleep(randomizer())
 		address = row[0].replace(' ', '%20')
 		city = CITY.replace(' ', '%20')
 		url = f'https://www.truepeoplesearch.com/resultaddress?streetaddress={address}&citystatezip={city},%20FL'
 		print(f'Accessing = {url}')
 		driver.get(url)
+		time.sleep(randomizer())
 		contacts_number.append(row[0])
 		while True:
+			driver.implicitly_wait(randomizer())
 			wait0 = WebDriverWait(driver, TIMEOUT).until(EC.presence_of_all_elements_located((By.XPATH, '/html/body')))
 			blank_page = driver.find_element(By.XPATH, "/html/body").text
 			if 'We could not find any records for that search criteria.' in blank_page or 'This record is no longer available.' in blank_page or 'We could not find any records associated with that address.' in blank_page:
@@ -124,7 +152,6 @@ def main():
 			if len(links) == contacts_list or contacts_found == MAX_NUMBERS:
 				break
 			else:
-				time.sleep(randomizer())
 				links[contacts_list].click()
 				temp = extract_phone(row[0])
 				print(filtered_contacts[contacts_list][0])
